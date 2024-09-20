@@ -4,4 +4,5 @@ services:
     ports:
       - "50000:50000"
       - "8080:8080"
- 
+
+# docker compose file it you want to run the jenkins image and test locally
