@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: cd app && docker build . --tag dockerapp
+      run: cd app && docker build . --tag CICDAPP
     
     # Log in to Docker Hub
     - name: Log in to Docker Hub
