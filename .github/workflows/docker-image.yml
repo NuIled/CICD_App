@@ -35,3 +35,13 @@ jobs:
         docker build -t ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
 
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      run: |
+        cd app
+        mkdir deploy
+        cp -r ./app/templates/* deploy 
+        cp -r ./app/static deploy 
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./app/deploy  # Update this to the folder containing static files
