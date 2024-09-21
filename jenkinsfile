@@ -38,7 +38,6 @@ pipeline {
                     git config --global user.name "NuIled"
                     git add .
                     git commit -m "Auto-commit before switching branches"
-                    git push https://${GIT_USER}:${GIT_PASS}@github.com/NuIled/CICD_App.git master
                     git checkout main
                     git pull origin main
                     git merge master
