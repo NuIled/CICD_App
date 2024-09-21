@@ -6,31 +6,64 @@ on:
   pull_request:
     branches: [ "main" ]
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: |
-        cd app
-        docker build . --tag cicdapp
-    
-    # Log in to Docker Hub
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-     # Build the Docker image
-     # Tag the Docker image 
-    - name: Build Docker image and push it to Docker Hub
-      run: | 
-        cd app
-        docker tag cicdapp ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest .
-        docker push ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
+      - uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: |
+          cd app
+          docker build . --tag cicdapp
+      
+      # Log in to Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      # Tag and push the Docker image
+      - name: Tag and Push Docker image
+        run: | 
+          cd app
+          docker tag cicdapp ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
 
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Create the deploy folder
+        run: |
+          mkdir deploy
+          cp -r ./app/templates/* deploy 
+          cp -r ./app/static deploy 
+          ls deploy
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the deploy folder
+          path: './deploy'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

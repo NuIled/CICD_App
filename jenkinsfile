@@ -5,22 +5,41 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your code from the repo
-                git 'https://github.com/NuIled/CICD_App'
+                git branch: 'master', url: 'https://github.com/NuIled/CICD_App.git'
             }
         }
         stage('Install Dependencies') {
             steps {
                 // Install dependencies if needed
-                sh 'cd app'
-                sh 'apt install python3-full -y'
-                sh 'pip install -r requirements.txt'
+                sh 'sudo apt install python3-full -y'
+                sh 'sudo apt install python3-pip -y'
+                sh 'python3 -m pip install -r app/requirements.txt'
             }
         }
         stage('Run Tests') {
             steps {
                 // Run unittest to test your code
-                sh 'cd ..'
-                sh 'python -m unittest discover -s apptest'
+                sh 'python3 -m unittest discover -s apptest'
+            }
+        }
+        // Push your code to the main branch
+        // Push changes using credentials
+        stage('Push to the main branch') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'github', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    sh '''
+                    git config --global user.email "sifi6027@gmail.com"
+                    git config --global user.name "NuIled"
+                    git checkout master
+                    git pull origin master
+                    git add .
+                    git commit -m "Auto-commit before switching branches"
+                    git checkout main
+                    git pull origin main
+                    git merge master
+                    git push https://${GIT_USER}:${GIT_PASS}@github.com/NuIled/CICD_App.git main
+                    '''
+                }
             }
         }
     }
