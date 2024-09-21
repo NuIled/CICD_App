@@ -42,28 +42,13 @@ jobs:
           docker tag cicdapp ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
 
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Create the deploy folder
-        run: |
-          mkdir deploy
-          cp -r ./app/templates/* deploy 
-          cp -r ./app/static deploy 
-          ls deploy
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload the deploy folder
-          path: './deploy'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      run: |
+        cd app
+        mkdir deploy
+        cp -r ./app/templates/* deploy 
+        cp -r ./app/static deploy 
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./deploy  # Update this to the folder containing static files
