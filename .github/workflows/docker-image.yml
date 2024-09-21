@@ -43,9 +43,8 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/cicdapp:latest
 
       - name: copy static files
-        run: |
-          cd app
-          cp -r ./app/static deploy 
+        run: |          
+          cp -r app/static deploy 
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
