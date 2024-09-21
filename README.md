@@ -21,6 +21,9 @@ This project demonstrates a full CI/CD pipeline that automatically tests, builds
 ## Project Overview
 This repository showcases an automated CI/CD pipeline using Jenkins and GitHub Actions. It involves testing code changes on Jenkins, pushing those changes back to the repository, building Docker images, pushing them to Docker Hub, and finally deploying the static assets of the website to GitHub Pages.
 
+![Screenshot](assets/screenshot.png)
+
+
 ## Technologies Used
 - **Jenkins**: For continuous integration and automated testing.
 - **GitHub Actions**: For continuous delivery, building Docker images, and deployment.
@@ -86,3 +89,8 @@ This repository showcases an automated CI/CD pipeline using Jenkins and GitHub A
 
 - Ensure Jenkins and GitHub Actions are properly configured with the right permissions.
 - Verify Docker Hub credentials are set in the GitHub repository secrets.
+
+
+## Links
+[site generated](https://nuiled.github.io/CICD_App/)
+[docker hub image](https://hub.docker.com/repository/docker/aoutifra/cicdapp/general)
