@@ -36,10 +36,7 @@ pipeline {
                     sh '''
                     git config --global user.email "sifi6027@gmail.com"
                     git config --global user.name "NuIled"
-                    
-                    # Pull the latest changes from master
-                    git pull origin master
-                    
+ 
                     # Stage all changes
                     git add .
 
