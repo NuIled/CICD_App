@@ -22,6 +22,12 @@ pipeline {
                 sh 'python3 -m unittest discover -s apptest'
             }
         }
+        stage('generate static files') {
+            steps {
+                // Run unittest to test your code
+                sh 'python3 app/app.py'
+            }
+        }
         // Push your code to the main branch
         // Push changes using credentials
         stage('Push to the main branch') {
@@ -30,14 +36,15 @@ pipeline {
                     sh '''
                     git config --global user.email "sifi6027@gmail.com"
                     git config --global user.name "NuIled"
-                    git checkout master
-                    git pull origin master
+ 
+                    # Stage all changes
                     git add .
-                    git commit -m "Auto-commit before switching branches"
-                    git checkout main
-                    git pull origin main
-                    git merge master
-                    git push https://${GIT_USER}:${GIT_PASS}@github.com/NuIled/CICD_App.git main
+
+                    # Commit the changes (if any)
+                    git commit -m "Resolved merge conflicts and removed binary files" || true
+
+                    # Push the changes to GitHub
+                    git push https://${GIT_USER}:${GIT_PASS}@github.com/NuIled/CICD_App.git main --force
                     '''
                 }
             }
