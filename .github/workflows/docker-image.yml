@@ -45,7 +45,7 @@ jobs:
       - name: copy static files
         run: |
           cd app
-          cp -r ./app/static deploy 
+          cp -r app/static deploy 
         
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -35,14 +35,24 @@ This repository showcases an automated CI/CD pipeline using Jenkins and GitHub A
 
 ### 2. **Automated Testing with Jenkins**
 - Jenkins automatically triggers a build on every push to the `master` branch. It runs unit tests to verify the integrity of the code.
-  
-### 3. **Pushing to Main Branch**
+### 3. **Static Website Generation**:
+   - The Flask application generates a static version of the website.
+   - The static files are stored in the `static_site/` directory.
+   
+   To generate the static site, run the following command:
+
+   ```bash
+   python3 app/app.py
+   ```
+
+### 4. **Pushing to Main Branch**
 - After successfully testing, Jenkins pushes the changes to the `main` branch.
 
-### 4. **GitHub Actions: Build Docker Image and Deploy**
+### 5. **GitHub Actions: Build Docker Image and Deploy**
 - GitHub Actions listens for any push to the `main` branch.
 - It then builds a Docker image for the Python app and pushes it to Docker Hub.
 - Finally, GitHub Actions deploys the static assets of the website to GitHub Pages.
+
 
 ## Jenkins Setup
 
