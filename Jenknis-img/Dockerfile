@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     openjdk-11-jdk \
     git \
     sudo
-    
+
 RUN wget --no-check-certificate -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
     
 RUN echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" > /etc/apt/sources.list.d/jenkins.list

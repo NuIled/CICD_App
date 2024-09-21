@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your code from the repo
+                git 'https://github.com/NuIled/CICD_App'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                // Install dependencies if needed
+                sh 'cd app'
+                sh 'apt install python3-full -y'
+                sh 'pip install -r requirements.txt'
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                // Run unittest to test your code
+                sh 'cd ..'
+                sh 'python -m unittest discover -s apptest'
+            }
+        }
+    }
+}
